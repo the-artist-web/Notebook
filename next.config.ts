@@ -1,5 +1,9 @@
-import type { NextConfig } from "next";
-
+/**
+ * Node modules
+ */
+import { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+ 
 const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
@@ -14,4 +18,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+
+export default withNextIntl(nextConfig);
