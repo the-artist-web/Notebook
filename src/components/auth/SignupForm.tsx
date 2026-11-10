@@ -60,14 +60,6 @@ const SIGNUP_FORM = {
  * Sign up form schema
  */
 const signupSchema = z.object({
-    username: z
-        .string()
-        .nonempty("Username is required")
-        .max(50, "Username must not exceed 50 characters")
-        .toLowerCase()
-        .trim()
-        .regex(/^[a-z0-9_]+$/, "Username can only contain lowercase letters, numbers, and underscores"),
-
     email: z
         .string()
         .nonempty("Email is required")
@@ -93,7 +85,6 @@ const SignupForm = () => {
     const form = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
-            username: "",
             email: "",
             password: "",
             password_confirmation: ""
@@ -159,27 +150,6 @@ const SignupForm = () => {
                         className="flex flex-col gap-5"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <Controller
-                            control={form.control}
-                            name="username"
-                            render={({ field, fieldState }) => (
-                                <Field>
-                                    <FieldLabel htmlFor="username">Username</FieldLabel>
-
-                                    <Input
-                                        type="text"
-                                        placeholder="e.g. johndeo"
-                                        id="username"
-                                        autoFocus
-                                        aria-invalid={fieldState.invalid}
-                                        {...field}
-                                    />
-
-                                    {fieldState.invalid && <FieldError>{fieldState.error?.message}</FieldError>}
-                                </Field>
-                            )}
-                        />
-
                         <Controller
                             control={form.control}
                             name="email"

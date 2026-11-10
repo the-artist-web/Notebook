@@ -9,7 +9,6 @@ import { createClient } from "@/lib/supabase/server";
  * Types
  */
 type SignupValues = {
-    username: string;
     email: string;
     password: string;
 };
@@ -21,9 +20,6 @@ export const signupAction = async (value: SignupValues) => {
         email: value.email,
         password: value.password,
         options: {
-            data: {
-                username: value.username
-            },
             emailRedirectTo: `${process.env.NEXT_PUBLIC_DOMAIN_NAME}/auth/callback`
         }
     });
