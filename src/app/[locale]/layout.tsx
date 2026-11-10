@@ -20,6 +20,8 @@ import { cn } from "@/lib/utils";
  * Components
  */
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 
 /**
  * Constants
@@ -150,7 +152,12 @@ export default async function LocaleLayout({
             showSpinner={false}
           />
           <NextIntlClientProvider>
-            <ViewTransition>{children}</ViewTransition>
+            <ViewTransition>
+              <TooltipProvider>
+                {children}
+                <Toaster />
+              </TooltipProvider>
+            </ViewTransition>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

@@ -24,7 +24,6 @@ const AUTH_ROUTES = [
 
 const PROTECTED_ROUTES = [
     "/reset-password",
-    "/",
     "/notebook",
 ];
 
