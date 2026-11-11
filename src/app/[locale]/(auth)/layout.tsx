@@ -1,10 +1,12 @@
 "use client";
 
-const layout = ({
+const AuthLayout = ({
     children
-}: React.PropsWithChildren<"div">) => 
+}: {
+    children: React.ReactNode;
+}) => 
     <div
         className="grid place-items-center w-full min-h-dvh py-10 px-4"
     >{children}</div>;
 
-export default layout
+export default AuthLayout
