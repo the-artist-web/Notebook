@@ -50,7 +50,7 @@ import { IconBrandGoogleFilled, IconBrandGithub } from "@tabler/icons-react";
  */
 const LOGIN_FORM = {
     title: "Welcome back",
-    description: "Login with your Apple or Google account",
+    description: "Login with your Google or Github account",
     textCenterSeparator: "Or continue with",
     footerText: "Don't have an account?",
     agreeText: "By clicking continue, you agree to our"
@@ -59,7 +59,7 @@ const LOGIN_FORM = {
 /**
  * Sign up form schema
  */
-const signupSchema = z.object({
+const loginSchema = z.object({
     email: z
         .string()
         .nonempty("Email is required")
@@ -74,8 +74,8 @@ const signupSchema = z.object({
 
 const LoginForm = () => {
     const router = useRouter();
-    const form = useForm<z.infer<typeof signupSchema>>({
-        resolver: zodResolver(signupSchema),
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: ""
@@ -166,7 +166,14 @@ const LoginForm = () => {
                             name="password"
                             render={({ field, fieldState }) => (
                                 <Field>
-                                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                                    <FieldLabel htmlFor="password">
+                                        Password
+
+                                        <Link
+                                            href="/forgot-password"
+                                            className="text-muted-foreground ms-auto hover:text-primary"
+                                        >Forgot your password?</Link>
+                                    </FieldLabel>
 
                                     <InputPassword
                                         placeholder="Enter your password"
