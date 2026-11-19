@@ -178,6 +178,12 @@
         @apply bg-primary
         text-primary-foreground;
     }
+
+    :disabled,
+    [disabled] {
+        @apply pointer-events-none
+        !opacity-75;
+    }
 }
 
 @layer utilities {

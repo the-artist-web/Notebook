@@ -7,7 +7,7 @@ import type { Metadata } from "next";
  * Components
  */
 import EmailVerify from "@/components/auth/EmailVerify";
-import Loading from "@/components/Loading";
+import LoadingCircle from "@/components/LoadingCircle";
 
 /**
  * Constants
@@ -50,7 +50,7 @@ export async function generateMetadata({
 }
 
 const page = async () =>
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<LoadingCircle />}>
         <EmailVerify />
     </Suspense>;
 
