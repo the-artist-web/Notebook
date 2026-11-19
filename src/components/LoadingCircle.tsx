@@ -33,7 +33,7 @@ const fadeInOut = {
     }
 }
 
-const Loading = ({
+const LoadingCircle = ({
     className
 }: React.ComponentProps<"div">) => {
     return (
@@ -46,4 +46,4 @@ const Loading = ({
     )
 }
 
-export default Loading
+export default LoadingCircle
