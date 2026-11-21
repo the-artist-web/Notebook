@@ -10,6 +10,7 @@ import { toast } from "sonner";
  * Custom modules
  */
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "@/i18n/navigation";
 
 /**
  * Actions
@@ -35,6 +36,7 @@ export const UserProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
+    const router = useRouter();
     const [user, setUser] = useState<UserType | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -56,7 +58,7 @@ export const UserProvider = ({
                 .eq("id", user.id)
                 .single();
                 
-            setUser({...user, ...profile});
+            setUser({...user, ...user.user_metadata, ...profile});
             setIsLoading(false);
         })();
 
@@ -80,6 +82,7 @@ export const UserProvider = ({
 
         setUser(null);
         setIsLoading(false);
+        router.replace("/login");
     }
 
     return (

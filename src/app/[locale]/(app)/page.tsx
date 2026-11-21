@@ -2,14 +2,7 @@
  * Node modules
  */
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { connection } from "next/server";
-
-/**
- * Actions
- */
-import { getNotebooksAction } from "@/actions/notebooks/getNotebooks";
-import { getUser } from "@/actions/auth/getUser";
+import Image from "next/image";
 
 /**
  * Components
@@ -18,12 +11,13 @@ import {
   Empty,
   EmptyHeader,
   EmptyTitle,
+  EmptyDescription
 } from "@/components/ui/empty";
 
 /**
  * Assets
  */
-import { StickyNotesIcon } from "lucide-react";
+import { Favicon } from "@/assets/images";
 
 /**
  * Constants
@@ -55,20 +49,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const page = async () => {
-  await connection();
-  
-  const user = await getUser();
-  const notebooks = await getNotebooksAction();
-  
-  if (user.ok)
-    if (notebooks.ok && notebooks.data.length > 0) redirect(`/notebook/${notebooks.data[0].id}`);
+  const siteName = SETTING_SITE.siteName;
 
   return (
     <Empty>
-      <EmptyHeader>
-        <StickyNotesIcon size={68} className="opacity-25" />
+      <Image
+        src={Favicon.src}
+        alt={siteName}
+        width={Favicon.width}
+        height={Favicon.height}
+        className="w-full h-full object-contain max-h-[68px]"
+      />
 
-        <EmptyTitle className="text-2xl font-normal">No Notes</EmptyTitle>
+      <EmptyHeader>
+        <EmptyTitle className="text-2xl font-bold tracking-wide lowercase !text-foreground">{siteName}</EmptyTitle>
+
+        <EmptyDescription>Streamline your daily note-taking with Notekeeper. Organize, access, and enhance productivity with ease. Your go-to platform for managing your everyday notes.</EmptyDescription>
       </EmptyHeader>
     </Empty>
   );

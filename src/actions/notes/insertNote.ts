@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 /**
  * Actions
  */
-import { getUser } from "@/actions/auth/getUser";
+import { getUser } from "@/actions/users/getUser";
 
 /**
  * Types
@@ -19,7 +19,13 @@ type NoteValues = {
     description: string;
 };
 
-export const insertNoteAction = async (notebookId: number, value: NoteValues) => {
+export const insertNoteAction = async (notebookId: number | undefined, value: NoteValues) => {
+    if (!notebookId) 
+        return {
+            ok: false as const,
+            err: "Please open a notebook first."
+        };
+
     const supabase = await createClient();
     const result = await getUser();
 

@@ -10,6 +10,20 @@ import { connection } from "next/server";
 import { showNotebookAction } from "@/actions/notebooks/showNotebook";
 
 /**
+ * Components
+ */
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
+
+/**
+ * Assets
+ */
+import { StickyNotesIcon } from "lucide-react";
+
+/**
  * Constants
  */
 import { SETTING_SITE } from "@/constants";
@@ -40,7 +54,7 @@ export async function generateMetadata({
         alternates: {
             canonical: pathname,
         },
-        title,
+        title: notebook.data.title,
         description,
         openGraph: {
             title,
@@ -58,17 +72,24 @@ const page = async ({
     params
 }: {
     params: Promise<{
-        locale: string;
         id: string;
     }>;
 }) => {
-    const { locale, id } = await params;
+    const { id } = await params;
     
     await connection();
 
     const notebook = await showNotebookAction(id);
 
-    return ("Hello")
+    return (
+        <Empty>
+            <EmptyHeader>
+                <StickyNotesIcon size={68} className="opacity-25" />
+
+                <EmptyTitle className="text-2xl font-normal">No Notes</EmptyTitle>
+            </EmptyHeader>
+        </Empty>
+    )
 };
 
 export default page

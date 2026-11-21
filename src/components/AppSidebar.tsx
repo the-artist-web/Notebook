@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
+import { useMediaQuery } from "@custom-react-hooks/all";
 
 /**
  * Custom modules
@@ -44,6 +45,15 @@ import {
     SidebarHeader,
     SidebarGroupLabel
 } from "@/components/ui/sidebar";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from "@/components/ui/drawer";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -105,6 +115,119 @@ const NewNoteButton = ({
     )
 }
 
+const DeleteNote = ({
+    notebook
+}: {
+    notebook: NotebookType
+}) => {
+    const router = useRouter();
+    const isWide = useMediaQuery("(min-width: 768px)");
+
+    const onDelete = async () => {
+        const result = await deleteNotebookAction(notebook.id);
+
+        if (!result.ok) {
+            toast.error(result.err);
+            return;
+        }
+
+        toast.success("Notebook deleted successfully.", {
+            duration: 1500
+        });
+
+        setTimeout(() => router.replace("/"), 1500);
+    };
+
+    if (isWide)
+        return (
+            <AlertDialog>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                size="icon-xs"
+                                variant="ghost"
+                            >
+                                <TrashIcon />
+                            </Button>
+                        </AlertDialogTrigger>
+                    </TooltipTrigger>
+
+                    <TooltipContent
+                        side="bottom"
+                        align="center"
+                    >Delete notebook</TooltipContent>
+                </Tooltip>
+
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure you want to delete {`"${notebook.title}"`}?</AlertDialogTitle>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                        <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
+
+                        <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => {
+                                onDelete();
+                            }}
+                        >
+                            Delete
+
+                            <div className="state-layer" />
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        );
+
+    return (
+        <Drawer direction="bottom">
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <DrawerTrigger asChild>
+                        <Button
+                            size="icon-xs"
+                            variant="ghost"
+                        >
+                            <TrashIcon />
+                        </Button>
+                    </DrawerTrigger>
+                </TooltipTrigger>
+
+                <TooltipContent
+                    side="bottom"
+                    align="center"
+                >Delete notebook</TooltipContent>
+            </Tooltip>
+
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle>Are you sure you want to delete {`"${notebook.title}"`}?</DrawerTitle>
+                </DrawerHeader>
+
+                <DrawerFooter>
+                    <Button
+                        variant="destructive"
+                        onClick={() => {
+                            onDelete();
+                        }}
+                    >
+                        Delete
+
+                        <div className="state-layer" />
+                    </Button>
+
+                    <DrawerClose asChild>
+                        <Button variant="ghost">Cancel</Button>
+                    </DrawerClose>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
+    );
+}
+
 /**
  * Assets
  */
@@ -163,7 +286,6 @@ const NavLink = ({
     notebook: NotebookType;
 }) => {
     const pathname = usePathname();
-    const router = useRouter();
     const [isEdit, setIsEdit] = useState(false);
     const form = useForm<z.infer<typeof notebookSchema>>({
         resolver: zodResolver(notebookSchema),
@@ -183,21 +305,6 @@ const NavLink = ({
         toast.success("Notebook updated successfully.");
     };
 
-    const onDelete = async () => {
-        const result = await deleteNotebookAction(notebook.id);
-
-        if (!result.ok) {
-            toast.error(result.err);
-            return;
-        }
-
-        toast.success("Notebook deleted successfully.", {
-            duration: 1500
-        });
-
-        setTimeout(() => router.replace("/"), 1500);
-    };
-
     return (
         <MotionSidebarMenuItem
             variants={itemVariants}
@@ -215,7 +322,7 @@ const NavLink = ({
                         </Link>
                     </SidebarMenuButton>
 
-                    <div className="absolute top-1/2 right-3 rlt:right-auto rtl:left-3 -translate-y-1/2 flex items-center ms-auto opacity-0 group-hover/action:opacity-100 transition-opacity duration-150">
+                    <div className="absolute top-1/2 right-3 rlt:right-auto rtl:left-3 -translate-y-1/2 flex items-center ms-auto md:opacity-0 group-hover/action:opacity-100 transition-opacity duration-150">
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
@@ -233,46 +340,7 @@ const NavLink = ({
                             >Edit notebook</TooltipContent>
                         </Tooltip>
 
-                        <AlertDialog>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <AlertDialogTrigger asChild>
-                                        <Button
-                                            size="icon-xs"
-                                            variant="ghost"
-                                        >
-                                            <TrashIcon />
-                                        </Button>
-                                    </AlertDialogTrigger>
-                                </TooltipTrigger>
-
-                                <TooltipContent
-                                    side="bottom"
-                                    align="center"
-                                >Delete notebook</TooltipContent>
-                            </Tooltip>
-
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure you want to delete {`"${notebook.title}"`}?</AlertDialogTitle>
-                                </AlertDialogHeader>
-
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
-
-                                    <AlertDialogAction 
-                                        variant="destructive"
-                                        onClick={() => {
-                                            onDelete();
-                                        }}
-                                    >
-                                        Delete
-
-                                        <div className="state-layer" />
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                        <DeleteNote notebook={notebook} />
                     </div>
                 </>
             ) : (
@@ -434,7 +502,7 @@ export function AppSidebar() {
                 </>
             ) : (
                 <>
-                    <SidebarHeader>
+                    <SidebarHeader className="pb-0">
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton className="!bg-transparent mb-2">
@@ -450,107 +518,109 @@ export function AppSidebar() {
                                 </NewNoteDialog>
                             )
                         )}
-                    </SidebarHeader>
 
-                    <SidebarContent>
                         <Collapsible
                             open={isOpen}
                             onOpenChange={setIsOpen}
                         >
-                            <SidebarGroup>
-                                <div className="flex items-center justify-between mb-1">
-                                    <SidebarGroupLabel className="p-0">NOTEBOOKS</SidebarGroupLabel>
+                            <div className="flex items-center justify-between mb-1">
+                                <SidebarGroupLabel className="p-0">NOTEBOOKS</SidebarGroupLabel>
 
-                                    {isAuth && (
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <CollapsibleTrigger asChild>
-                                                    <MotionButton
-                                                        type="button"
-                                                        variant="ghost"
-                                                        size="icon-xs"
-                                                        initial={{
-                                                            opacity: 0,
-                                                            scale: 0.9
-                                                        }}
-                                                        animate={{
-                                                            opacity: 1,
-                                                            scale: 1
-                                                        }}
-                                                    >
-                                                        {!isOpen ? <PlusIcon /> : <XIcon />}
-                                                    </MotionButton>
-                                                </CollapsibleTrigger>
-                                            </TooltipTrigger>
+                                {isAuth && (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <CollapsibleTrigger asChild>
+                                                <MotionButton
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="icon-xs"
+                                                    initial={{
+                                                        opacity: 0,
+                                                        scale: 0.9
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        scale: 1
+                                                    }}
+                                                >
+                                                    {!isOpen ? <PlusIcon /> : <XIcon />}
+                                                </MotionButton>
+                                            </CollapsibleTrigger>
+                                        </TooltipTrigger>
 
-                                            <TooltipContent
-                                                side="bottom"
-                                                align="center"
-                                            >{isOpen ? "Close" : "Create new notebook"}</TooltipContent>
-                                        </Tooltip>
-                                    )}
-                                </div>
+                                        <TooltipContent
+                                            side="bottom"
+                                            align="center"
+                                        >{isOpen ? "Close" : "Create new notebook"}</TooltipContent>
+                                    </Tooltip>
+                                )}
+                            </div>
 
-                                <MotionSidebarMenu
-                                    variants={containerVariants}
-                                    initial="hidden"
-                                    animate="visible"
-                                >
-                                    {isAuth && (
-                                        <CollapsibleContent>
-                                            <SidebarMenuItem>
-                                                <Controller
-                                                    control={form.control}
-                                                    name="title"
-                                                    render={({ field, fieldState }) => (
-                                                        <Field className="gap-0.5 mb-2">
-                                                            <InputGroup className={cn("bg-sidebar-accent h-[56px] py-2 mt-1 text-sm font-normal rounded-full !ring-0 focus-visible:!ring-transparent !border-transparent", form.formState.isSubmitting ? "ps-4" : "px-4")}>
-                                                                <InputGroupInput
-                                                                    {...field}
-                                                                    placeholder="e.g. Project ideas"
-                                                                    className="p-0"
-                                                                    aria-invalid={fieldState.invalid}
-                                                                    autoFocus
-                                                                    onKeyDown={e => {
-                                                                        if (e.key === "Enter") {
-                                                                            e.preventDefault();
-                                                                            form.handleSubmit(async () => {
-                                                                                await onSubmit();
-                                                                                setIsOpen(false);
-                                                                                form.resetField("title");
-                                                                            })();
-                                                                        }
-                                                                    }}
-                                                                />
+                            <SidebarMenu>
+                                {isAuth && (
+                                    <CollapsibleContent>
+                                        <SidebarMenuItem>
+                                            <Controller
+                                                control={form.control}
+                                                name="title"
+                                                render={({ field, fieldState }) => (
+                                                    <Field className="gap-0.5 mb-2">
+                                                        <InputGroup className={cn("bg-sidebar-accent h-[56px] py-2 mt-1 text-sm font-normal rounded-full !ring-0 focus-visible:!ring-transparent !border-transparent", form.formState.isSubmitting ? "ps-4" : "px-4")}>
+                                                            <InputGroupInput
+                                                                {...field}
+                                                                placeholder="e.g. Project ideas"
+                                                                className="p-0"
+                                                                aria-invalid={fieldState.invalid}
+                                                                autoFocus
+                                                                onKeyDown={e => {
+                                                                    if (e.key === "Enter") {
+                                                                        e.preventDefault();
+                                                                        form.handleSubmit(async () => {
+                                                                            await onSubmit();
+                                                                            setIsOpen(false);
+                                                                            form.resetField("title");
+                                                                        })();
+                                                                    }
+                                                                }}
+                                                            />
 
-                                                                {form.formState.isSubmitting && (
-                                                                    <Button
-                                                                        variant="ghost"
-                                                                        size="icon"
-                                                                        className="pointer-events-none !size-[56px]"
-                                                                    >
-                                                                        <Spinner />
-                                                                    </Button>
-                                                                )}
-                                                            </InputGroup>
+                                                            {form.formState.isSubmitting && (
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="pointer-events-none !size-[56px]"
+                                                                >
+                                                                    <Spinner />
+                                                                </Button>
+                                                            )}
+                                                        </InputGroup>
 
-                                                            {fieldState.invalid && <FieldError className="text-xs">{fieldState.error?.message}</FieldError>}
-                                                        </Field>
-                                                    )}
-                                                />
-                                            </SidebarMenuItem>
-                                        </CollapsibleContent>
-                                    )}
-
-                                    {isAuth && notebooks.map(notebook => 
-                                        <NavLink 
-                                            key={`notebook-${notebook.id}`}
-                                            notebook={notebook}
-                                        />
-                                    )}
-                                </MotionSidebarMenu>
-                            </SidebarGroup>
+                                                        {fieldState.invalid && <FieldError className="text-xs">{fieldState.error?.message}</FieldError>}
+                                                    </Field>
+                                                )}
+                                            />
+                                        </SidebarMenuItem>
+                                    </CollapsibleContent>
+                                )}
+                            </SidebarMenu>
                         </Collapsible>
+                    </SidebarHeader>
+
+                    <SidebarContent>
+                        <SidebarGroup className="pt-0">
+                            <MotionSidebarMenu
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                {isAuth && notebooks.map(notebook => 
+                                    <NavLink 
+                                        key={`notebook-${notebook.id}`}
+                                        notebook={notebook}
+                                    />
+                                )}
+                            </MotionSidebarMenu>
+                        </SidebarGroup>
                     </SidebarContent>
                 </>
             )}

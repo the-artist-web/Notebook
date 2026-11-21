@@ -1,6 +1,7 @@
 export type UserType = {
     id: string;
-    display_name?: string;
+    avatar_url?: string;
+    full_name?: string;
     email?: string;
     username?: string;
     created_at: string;
