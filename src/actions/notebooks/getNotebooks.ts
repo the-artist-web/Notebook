@@ -4,7 +4,7 @@
  * Custom modules
  */
 import { createClient } from "@/lib/supabase/server";
-import { getUser } from "@/actions/auth/getUser";
+import { getUser } from "@/actions/users/getUser";
 
 export const getNotebooksAction = async () => {
     const supabase = await createClient();

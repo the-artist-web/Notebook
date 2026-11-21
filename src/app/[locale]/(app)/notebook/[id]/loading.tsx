@@ -4,8 +4,10 @@
 import { Spinner } from "@/components/ui/spinner";
 
 const Loading = () =>
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-card border border-border rounded-full shadow-lg p-2">
-        <Spinner className="!size-7" />
+    <div className="fixed inset-0 z-50 flex justify-center w-full h-dvh bg-background p-4">
+        <div className="bg-card border border-border rounded-full shadow-lg p-2 max-w-max max-h-max">
+            <Spinner className="!size-7" />
+        </div>
     </div>
 
 export default Loading;
