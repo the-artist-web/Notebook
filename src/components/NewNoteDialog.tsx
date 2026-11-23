@@ -65,7 +65,7 @@ import type { DialogProps } from "@radix-ui/react-dialog";
 import type { UseFormReturn } from "react-hook-form";
 
 type NewNoteFormValues = {
-    photo_url: File;
+    photo_url?: File;
     title: string;
     description: string;
 };

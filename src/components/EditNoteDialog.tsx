@@ -66,7 +66,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { NoteType } from "@/types";
 
 type EditNoteFormValues = {
-    photo_url: File;
+    photo_url?: File;
     title: string;
     description: string;
 };

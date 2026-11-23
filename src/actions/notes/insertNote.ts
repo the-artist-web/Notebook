@@ -14,7 +14,7 @@ import { getUser } from "@/actions/users/getUser";
  * Types
  */
 type NoteValues = {
-    photo_url: File;
+    photo_url?: File;
     title: string;
     description: string;
 };
