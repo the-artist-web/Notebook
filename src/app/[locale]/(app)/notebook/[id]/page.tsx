@@ -8,20 +8,17 @@ import { connection } from "next/server";
  * Actions
  */
 import { showNotebookAction } from "@/actions/notebooks/showNotebook";
+import { selectNotes } from "@/actions/notes/selectNotes";
 
 /**
  * Components
  */
-import {
-  Empty,
-  EmptyHeader,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import NotesList from "@/components/NotesList";
 
 /**
- * Assets
+ * Types
  */
-import { StickyNotesIcon } from "lucide-react";
+import { NoteType } from "@/types";
 
 /**
  * Constants
@@ -80,16 +77,19 @@ const page = async ({
     await connection();
 
     const notebook = await showNotebookAction(id);
+    const notes = await selectNotes(notebook.data.id);
+
+    if (!notes.ok) return;
+
+    const result = notes.data as NoteType[];
 
     return (
-        <Empty>
-            <EmptyHeader>
-                <StickyNotesIcon size={68} className="opacity-25" />
+        <div className="flex flex-col gap-3 px-4 px-6 mt-3 h-full">
+            <h1 className="text-base font-medium">{notebook.data.title}</h1>
 
-                <EmptyTitle className="text-2xl font-normal">No Notes</EmptyTitle>
-            </EmptyHeader>
-        </Empty>
-    )
+            <NotesList notes={result} />
+        </div>
+    );
 };
 
 export default page

@@ -13,6 +13,7 @@ export type NoteType = {
     title: string;
     description: string;
     notebook_id: number;
+    user_id: number;
     created_at: string;
 }
 

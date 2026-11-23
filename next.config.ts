@@ -3,6 +3,8 @@
  */
 import { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+
+const supabaseUrl = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL!);
  
 const nextConfig: NextConfig = {
   /* config options here */
@@ -16,6 +18,20 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  experimental: {
+      serverActions: {
+          bodySizeLimit: "10mb",
+      },
+  },
+  images: {
+    remotePatterns: [
+        {
+            protocol: "https",
+            hostname: supabaseUrl.hostname,
+            pathname: "/storage/v1/object/public/**",
+        },
+    ],
+}
 };
 
 const withNextIntl = createNextIntlPlugin();

@@ -7,7 +7,7 @@ Streamline your daily note-taking with Notekeeper. Organize, access, and enhance
 
 alt = Notekeeper
 
-<span class="material-symbols-rounded" aria-hidden="true">close</span>
+<span class="material-symbols-rounded" aria-hidden="true">Cancel</span>
 
 <span class="material-symbols-rounded" aria-hidden="true">add</span>
 New note
@@ -53,7 +53,7 @@ aria-label = New note
 <span class="material-symbols-rounded" aria-hidden="true">add</span>
 
 aria-label = Close modal
-<span class="material-symbols-rounded" aria-hidden="true">close</span>
+<span class="material-symbols-rounded" aria-hidden="true">Cancel</span>
 
 placeholder = Untitled
 
