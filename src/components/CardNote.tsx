@@ -258,7 +258,7 @@ const CardNote = ({
                 </DrawerContent>
             </Drawer>
 
-            <div className="flex items-center gap-1 absolute bottom-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+            <div className="flex items-center gap-1 absolute bottom-3 right-3 z-30 md:opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                 <Tooltip>
                     <EditNoteDialog note={note}>
                         <TooltipTrigger asChild>
