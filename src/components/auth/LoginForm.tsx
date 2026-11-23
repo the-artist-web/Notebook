@@ -97,7 +97,7 @@ const LoginForm = () => {
         <div className="flex flex-col gap-6 w-full max-w-[384px]">
             <Logo />
 
-            <Card>
+            <Card className="pt-[var(--card-spacing)]">
                 <CardContent>
                     <CardHeader className="text-center px-0 mb-6 gap-1">
                         <h1 className="text-xl font-bold">{LOGIN_FORM.title}</h1>
