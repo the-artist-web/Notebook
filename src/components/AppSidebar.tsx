@@ -626,7 +626,7 @@ export function AppSidebar() {
             )}
 
             <SidebarFooter>
-                <p className="text-sm font-normal text-muted-foreground">Copyright {year ?? "2026"} theartistweb</p>
+                <p className="text-sm font-normal text-muted-foreground">Copyright {year ?? "2026"} <strong>theartistweb</strong></p>
             </SidebarFooter>
         </Sidebar>
     )

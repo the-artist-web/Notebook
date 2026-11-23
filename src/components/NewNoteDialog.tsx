@@ -87,7 +87,7 @@ const photoSchema = z
     });
 
 const newNoteSchema = z.object({
-    photo_url: photoSchema,
+    photo_url: photoSchema.optional(),
 
     title: z
         .string()
@@ -263,7 +263,7 @@ const NewNoteDialog = ({
                                     type="button"
                                     variant="ghost"
                                     onClick={() => form.reset()}
-                                >Close</Button>
+                                >Cancel</Button>
                             </DialogClose>
 
                             <Button
@@ -304,7 +304,7 @@ const NewNoteDialog = ({
                                 type="button"
                                 variant="ghost"
                                 onClick={() => form.reset()}
-                            >Close</Button>
+                            >Cancel</Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </form>

@@ -57,6 +57,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { InputPassword } from "@/components/InputPassword";
+import { ToggleTheme } from "@/components/ToggleTheme";
 
 /**
  * Assets
@@ -274,6 +275,14 @@ const SettingsForm = ({
                         )}
                     />
                 </div>
+            </Field>
+
+            <FieldSeparator />
+
+            <Field className="!grid items-start md:grid-cols-[1fr_2fr] gap-y-2 gap-x-4">
+                <FieldLabel htmlFor="theme">Theme</FieldLabel>
+
+                <ToggleTheme />
             </Field>
 
             <FieldSeparator />

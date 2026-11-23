@@ -35,23 +35,33 @@ export const insertNoteAction = async (notebookId: number | undefined, value: No
             err: "Unauthorized"
         };
 
-    const { data: notePhoto, error: notePhotoError } = await supabase.storage
-        .from("notes")
-        .upload(`${result.data.id}/${crypto.randomUUID()}-${value.photo_url.name}`, value.photo_url);
+    let notePhotoPath;
+    if (value.photo_url) {
+        const { data: notePhoto, error: notePhotoError } = await supabase.storage
+            .from("notes")
+            .upload(`${result.data.id}/${crypto.randomUUID()}-${value.photo_url.name}`, value.photo_url);
+    
+        if (notePhotoError)
+            return {
+                ok: false,
+                err: notePhotoError.message
+            };
+    
+        const { data: getNotePhoto } = await supabase.storage
+            .from("notes")
+            .getPublicUrl(notePhoto.path);
 
-    if (notePhotoError)
-        return {
-            ok: false,
-            err: notePhotoError.message
-        };
+        notePhotoPath = getNotePhoto.publicUrl;
+    }
 
     const { data: note, error } = await supabase
         .from("notes")
         .insert({ 
-            photo_url: notePhoto.path,
+            photo_url: notePhotoPath,
             title: value.title,
             description: value.description,
-            notebook_id: notebookId
+            notebook_id: notebookId,
+            user_id: result.data.id
         })
         .select()
         .single();
